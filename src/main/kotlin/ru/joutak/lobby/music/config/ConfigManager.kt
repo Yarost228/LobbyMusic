@@ -17,6 +17,7 @@ object ConfigManager {
     private val configFile = File(PluginManager.dataFolder, "config.yml")
     private val playlistFile = File(PluginManager.dataFolder, "playlist.yml")
     private val musicZonesFile = File(PluginManager.dataFolder, "zones.yml")
+    private val playersSettingsFile = File(PluginManager.dataFolder, "players_settings.yml")
 
     private val configWatcher = FileWatcher(configFile.parent)
     private val configLoader =
@@ -138,6 +139,50 @@ object ConfigManager {
             musicZonesYaml.save(musicZonesFile)
         } catch (e: IOException) {
             PluginManager.logger.severe("Ошибка при сохранении списка зон: ${e.message}")
+        }
+    }
+
+    fun loadPlayersSettings(): MutableMap<String, Boolean>? {
+        val playersSettingsFile = File(PluginManager.dataFolder, "players_settings.yml")
+
+        if (!playersSettingsFile.exists()) {
+            val playersSettingsYaml = YamlConfiguration()
+            playersSettingsYaml.set("players_settings", emptyMap<String, Boolean>())
+
+            try {
+                playersSettingsYaml.save(ConfigManager.playersSettingsFile)
+            } catch (e: IOException) {
+                PluginManager.logger.severe("Ошибка при сохранении пустого списка настроек игроков: ${e.message}")
+                return null
+            }
+
+            PluginManager.logger.warning(
+                "Отсутствует файл со списком настроек игроков (${playersSettingsFile.path}), был создан файл с пустым списком.",
+            )
+            return null
+        }
+
+        try {
+            val playersSettingsYaml = YamlConfiguration.loadConfiguration(playersSettingsFile)
+            val playersSettings = playersSettingsYaml.getConfigurationSection("players_settings")?.getValues(false)
+
+            PluginManager.logger.info("Список настроек игроков успешно загружен!")
+
+            return playersSettings as HashMap<String, Boolean>?
+        } catch (e: Exception) {
+            PluginManager.logger.severe("Не удалось загрузить список настроек игроков: ${e.message}")
+            return null
+        }
+    }
+
+    fun savePlayerSettings(players_settings: Map<String, Boolean>) {
+        val playersSettingsYaml = YamlConfiguration()
+        playersSettingsYaml.set("players_settings", players_settings)
+
+        try {
+            playersSettingsYaml.save(playersSettingsFile)
+        } catch (e: IOException) {
+            PluginManager.logger.severe("Ошибка при сохранении настроек игроков: ${e.message}")
         }
     }
 }

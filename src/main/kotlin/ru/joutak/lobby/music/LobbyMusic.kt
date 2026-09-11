@@ -9,12 +9,14 @@ import org.bukkit.plugin.java.JavaPlugin
 import ru.joutak.lobby.music.commands.core.CoreCommandExecutor
 import ru.joutak.lobby.music.config.ConfigManager
 import ru.joutak.lobby.music.event.PlayerChangedWorldListener
+import ru.joutak.lobby.music.event.PlayerJoinEvent
 import ru.joutak.lobby.music.event.PlayerJoinZoneListener
 import ru.joutak.lobby.music.event.PlayerMoveListener
 import ru.joutak.lobby.music.event.PlayerQuitListener
 import ru.joutak.lobby.music.event.ZoneNextTrackListener
 import ru.joutak.lobby.music.music.Music
 import ru.joutak.lobby.music.music.MusicManager
+import ru.joutak.lobby.music.players_settings.PlayersSettingsManager
 import ru.joutak.lobby.music.zone.Zone
 import ru.joutak.lobby.music.zone.ZoneManager
 
@@ -82,6 +84,7 @@ class LobbyMusic : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(PlayerChangedWorldListener, instance)
         Bukkit.getPluginManager().registerEvents(PlayerMoveListener, instance)
         Bukkit.getPluginManager().registerEvents(PlayerQuitListener, instance)
+        Bukkit.getPluginManager().registerEvents(PlayerJoinEvent, instance)
     }
 
     private fun loadConfig() {
@@ -93,10 +96,12 @@ class LobbyMusic : JavaPlugin() {
         ConfigurationSerialization.registerClass(Music::class.java, "Music")
         MusicManager.load()
         ZoneManager.load()
+        PlayersSettingsManager.load()
     }
 
     private fun saveData() {
         ZoneManager.save()
         MusicManager.save()
+        PlayersSettingsManager.save()
     }
 }

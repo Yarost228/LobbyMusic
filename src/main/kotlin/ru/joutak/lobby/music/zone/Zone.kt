@@ -53,6 +53,8 @@ data class Zone(
 
     fun stop() = musicPlayer.stop()
 
+    fun stopFor(player: Player) = musicPlayer.stopFor(player)
+
     override fun serialize(): Map<String, Any> {
         val serializedZone = mutableMapOf<String, Any>()
 
