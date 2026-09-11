@@ -16,6 +16,14 @@ object SkipCommand : PluginCommand("skip", listOf("name"), "", null) {
         if (args.size != this.args.size) {
             return false
         }
+        if (!sender.hasPermission("lobbymusic.skip")) {
+            sender.sendMessage(
+                LinearComponents.linear(
+                    Component.text("Отсутствует", NamedTextColor.RED, TextDecoration.BOLD),
+                    Component.text(" право для пропуска музыки."),
+                ),
+            )
+        }
         if (ZoneManager.containsMusicZone(args[0])) {
             val zone = ZoneManager.getMusicZones()[args[0]]!!
 

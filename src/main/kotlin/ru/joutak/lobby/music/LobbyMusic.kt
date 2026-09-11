@@ -5,20 +5,18 @@ import net.kyori.adventure.text.LinearComponents
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import org.bukkit.permissions.Permission
+import org.bukkit.permissions.PermissionDefault
 import org.bukkit.plugin.java.JavaPlugin
 import ru.joutak.lobby.music.commands.core.CoreCommandExecutor
 import ru.joutak.lobby.music.config.ConfigManager
-import ru.joutak.lobby.music.event.PlayerChangedWorldListener
-import ru.joutak.lobby.music.event.PlayerJoinEvent
-import ru.joutak.lobby.music.event.PlayerJoinZoneListener
-import ru.joutak.lobby.music.event.PlayerMoveListener
-import ru.joutak.lobby.music.event.PlayerQuitListener
-import ru.joutak.lobby.music.event.ZoneNextTrackListener
+import ru.joutak.lobby.music.event.*
 import ru.joutak.lobby.music.music.Music
 import ru.joutak.lobby.music.music.MusicManager
 import ru.joutak.lobby.music.players_settings.PlayersSettingsManager
 import ru.joutak.lobby.music.zone.Zone
 import ru.joutak.lobby.music.zone.ZoneManager
+
 
 class LobbyMusic : JavaPlugin() {
     companion object {
@@ -53,6 +51,13 @@ class LobbyMusic : JavaPlugin() {
         // Register commands and events
         registerCommands()
         registerEvents()
+
+        val skipPerm = Permission(
+            "lobbymusic.skip",
+            "Allows to skip music in zones",
+            PermissionDefault.OP
+        )
+        Bukkit.getPluginManager().addPermission(skipPerm)
 
         logger.info("Плагин ${pluginMeta.name} версии ${pluginMeta.version} включен!")
 
