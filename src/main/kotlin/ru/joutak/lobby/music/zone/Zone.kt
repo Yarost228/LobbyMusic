@@ -44,6 +44,8 @@ data class Zone(
 
     fun play() = musicPlayer.play()
 
+    fun skipCurrentMusic() = musicPlayer.skipCurrentMusic()
+
     fun playFor(player: Player) {
         addListener(player)
         musicPlayer.playFor(player)

@@ -30,6 +30,10 @@ class ZoneMusicPlayer(
         playNext(musicScheduler.getNextMusic())
     }
 
+    fun skipCurrentMusic() {
+        playNext(musicScheduler.getNextMusic())
+    }
+
     private fun playNext(music: Music) {
         stop()
         currentMusic = music

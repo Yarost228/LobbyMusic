@@ -10,5 +10,6 @@ object ZoneCommandExecutor : PluginCommandExecutor("zone") {
         registerCommand(PlayCommand)
         registerCommand(RemoveCommand)
         registerCommand(StopCommand)
+        registerCommand(SkipCommand)
     }
 }
